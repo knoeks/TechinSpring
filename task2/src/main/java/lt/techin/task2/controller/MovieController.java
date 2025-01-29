@@ -36,6 +36,19 @@ public class MovieController {
     return ResponseEntity.ok(movies.get(index));
   }
 
+
+  // cia search
+  @GetMapping("/movies/search")
+  public ResponseEntity<Movie> searchMovie(@RequestParam(value = "title", defaultValue = "")  String title) {
+    Movie searchResult = movies.stream().filter(item -> item.getName().contains(title)).findFirst().orElse(null);
+    if (title.isEmpty() || searchResult == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity.ok(searchResult);
+  }
+
+
   @PostMapping("/movies")
   public ResponseEntity<Movie> saveMovie(@RequestBody Movie movie) {
     if (movie.getGenre().isEmpty() || movie.getName().isEmpty() || movie.getRating().isEmpty()) {
