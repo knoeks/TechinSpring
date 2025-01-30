@@ -43,8 +43,8 @@ public class MovieController {
 
   // cia search
   @GetMapping("/movies/search")
-  public ResponseEntity<Movie> searchMovie(@RequestParam(value = "title", defaultValue = "")  String title) {
-    Movie searchResult = movies.stream().filter(item -> item.getName().contains(title)).findFirst().orElse(null);
+  public ResponseEntity<List<Movie>> searchMovie(@RequestParam(value = "title", defaultValue = "") String title) {
+    List<Movie> searchResult = movies.stream().filter(item -> item.getName().contains(title)).toList();
     if (title.isEmpty() || searchResult == null) {
       return ResponseEntity.notFound().build();
     }
@@ -56,9 +56,9 @@ public class MovieController {
   @PostMapping("/movies")
   public ResponseEntity<Movie> saveMovie(@RequestBody Movie movie) {
     //cia labai blogai
-    if ( movie == null ||
-            movie.getGenre() == null || movie.getGenre().isEmpty()
-            || movie.getName() == null ||  movie.getName().isEmpty() ||
+    if (movie == null ||
+            movie.getGenre() == null || movie.getGenre().isEmpty() ||
+            movie.getName() == null || movie.getName().isEmpty() ||
             movie.getRating() == null || movie.getRating().isEmpty()) {
       return ResponseEntity.badRequest().build();
     }
@@ -67,6 +67,8 @@ public class MovieController {
     movies.add(movie);
 
     return ResponseEntity.created(
+                    // pasako kad noriu konstruoti nuoroda
+
                     ServletUriComponentsBuilder.fromCurrentRequest()
                             .path("/{index}")
                             .buildAndExpand(movies.size() - 1)
@@ -74,4 +76,11 @@ public class MovieController {
             .body(movie);
   }
 
+  @PutMapping("/movies/{index}")
+  public ResponseEntity<Movie> updateMovie(@PathVariable int index, @RequestBody Movie movie) {
+    if (index > movies.size() - 1) {
+      return ResponseEntity.badRequest().build();
+    }
+
+  }
 }
