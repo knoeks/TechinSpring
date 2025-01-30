@@ -25,6 +25,10 @@ public class MovieController {
 
   @GetMapping("/movies")
   public ResponseEntity<List<Movie>> getMovies() {
+    if (movies.isEmpty()) {
+      return ResponseEntity.ok(movies);
+    }
+    // ???????
     return ResponseEntity.ok(movies);
   }
 
@@ -51,7 +55,11 @@ public class MovieController {
 
   @PostMapping("/movies")
   public ResponseEntity<Movie> saveMovie(@RequestBody Movie movie) {
-    if (movie.getGenre().isEmpty() || movie.getName().isEmpty() || movie.getRating().isEmpty()) {
+    //cia labai blogai
+    if ( movie == null ||
+            movie.getGenre() == null || movie.getGenre().isEmpty()
+            || movie.getName() == null ||  movie.getName().isEmpty() ||
+            movie.getRating() == null || movie.getRating().isEmpty()) {
       return ResponseEntity.badRequest().build();
     }
 
