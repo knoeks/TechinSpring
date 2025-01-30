@@ -23,6 +23,8 @@ public class BookController {
           new Book("Spring Security In Action", "Laurentiu Spilca"))); // Tai tik pvz.
 
 
+
+  // GetAll
   // ResponseEntity apgaubia List<Book> ir grazina ok + books
   @GetMapping("/books")
   public ResponseEntity<List<Book>> getBooks() {
@@ -30,6 +32,7 @@ public class BookController {
   }
 
 
+  // GetOne
   // cia dar paima is linko index
   @GetMapping("/books/{index}")
   public ResponseEntity<Book> getBook(@PathVariable int index) {
