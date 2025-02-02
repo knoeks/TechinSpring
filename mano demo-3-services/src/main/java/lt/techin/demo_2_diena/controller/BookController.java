@@ -117,7 +117,7 @@ public class BookController {
                             .path("/api/books/{id}")
                             .buildAndExpand(savedBook.getId())
                             .toUri())
-            .body(book);
+            .body(savedBook);
   }
 
   @DeleteMapping("/books/{id}")
