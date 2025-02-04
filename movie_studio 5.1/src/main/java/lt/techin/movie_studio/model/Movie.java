@@ -4,6 +4,7 @@ package lt.techin.movie_studio.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lt.techin.movie_studio.validation.Person;
 
 import java.util.List;
 
@@ -19,8 +20,7 @@ public class Movie {
   @Size(max = 50)
   private String title;
 
-  @NotBlank
-  @Size(max = 50)
+  @Person
   private String director;
 
   @OneToMany(cascade = CascadeType.ALL)

@@ -1,6 +1,7 @@
 package lt.techin.movie_studio.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lt.techin.movie_studio.model.Actor;
 import lt.techin.movie_studio.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class ActorController {
 
 
   @GetMapping("/actors/{id}")
-  public ResponseEntity<Actor> getActor(@PathVariable Long id) {
+  public ResponseEntity<Actor> getActor(@Valid @PathVariable Long id) {
     Optional<Actor> optionalActor = actorService.findActorById(id);
 
     if (optionalActor.isEmpty()) {

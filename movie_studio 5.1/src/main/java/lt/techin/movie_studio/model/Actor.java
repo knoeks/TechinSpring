@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lt.techin.movie_studio.validation.Person;
 
 @Entity
 @Table(name = "actors")
@@ -13,8 +14,7 @@ public class Actor {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank
-  @Size(min = 3, max = 60)
+  @Person
   private String fullName;
   @Positive
   private Short age;
