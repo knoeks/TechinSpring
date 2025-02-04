@@ -31,7 +31,7 @@ public class MovieController {
   public ResponseEntity<Movie> getMovies(@PathVariable Long id) {
     Optional<Movie> optionalMovie = movieService.findMovieById(id);
 
-    if (optionalMovie) {
+    if (optionalMovie.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 

@@ -23,10 +23,15 @@ public class Screening {
   @NotNull
   private LocalDateTime screening_time;
 
-  public Screening(long id, String hall, LocalDateTime screening_time) {
+  @NotNull
+  private Long movie_id;
+
+
+  public Screening(long id, String hall, LocalDateTime screening_time, Long movie_id) {
     this.id = id;
     this.hall = hall;
     this.screening_time = screening_time;
+    this.movie_id = movie_id;
   }
 
   public Screening() {
@@ -51,5 +56,10 @@ public class Screening {
 
   public void setScreening_time(LocalDateTime screening_time) {
     this.screening_time = screening_time;
+  }
+
+
+  public Long getMovie_id() {
+    return movie_id;
   }
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot WebSocket Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<h2>WebSocket Chat</h2>
+<div>
+    <input type="text" id="from" placeholder="Your name">
+    <input type="text" id="text" placeholder="Message">
+    <button onclick="sendMessage()">Send</button>
+</div>
+<ul id="messages"></ul>
+
+<script>
+    var stompClient = null;
+
+    // Connect to the WebSocket endpoint
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            // Subscribe to the topic for messages
+            stompClient.subscribe('/topic/messages', function(messageOutput) {
+                showMessage(JSON.parse(messageOutput.body));
+            });
+        });
+    }
+
+    function sendMessage() {
+        var from = document.getElementById("from").value;
+        var text = document.getElementById("text").value;
+        stompClient.send("/app/chat", {}, JSON.stringify({'from': from, 'text': text}));
+    }
+
+    function showMessage(message) {
+        var messages = document.getElementById("messages");
+        var messageElement = document.createElement("li");
+        messageElement.appendChild(document.createTextNode(message.from + ": " + message.text));
+        messages.appendChild(messageElement);
+    }
+
+    // Initialize the connection when the page loads
+    window.onload = connect;
+</script>
+</body>
+</html>
