@@ -38,8 +38,6 @@ public class GlobalExceptionHandler {
               violation.getMessage());
     });
 
-
     return ResponseEntity.badRequest().body(errors);
-
   }
 }

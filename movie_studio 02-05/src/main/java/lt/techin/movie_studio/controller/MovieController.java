@@ -1,6 +1,8 @@
 package lt.techin.movie_studio.controller;
 
 import jakarta.validation.Valid;
+import lt.techin.movie_studio.dto.MovieDTO;
+import lt.techin.movie_studio.dto.MovieMapper;
 import lt.techin.movie_studio.model.Movie;
 import lt.techin.movie_studio.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +26,27 @@ public class MovieController {
   }
 
   @GetMapping("/movies")
-  public ResponseEntity<List<Movie>> getMovies() {
-    return ResponseEntity.ok(movieService.findAllMovies());
+  public ResponseEntity<List<MovieDTO>> getMovies() {
+    return ResponseEntity.ok(MovieMapper.toMovieDTOList(movieService.findAllMovies()));
   }
 
 
   @GetMapping("/movies/{id}")
-  public ResponseEntity<Movie> getMovies(@PathVariable Long id) {
+  public ResponseEntity<MovieDTO> getMovies(@PathVariable Long id) {
     Optional<Movie> optionalMovie = movieService.findMovieById(id);
 
     if (optionalMovie.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
-    return ResponseEntity.ok(optionalMovie.get());
+    return ResponseEntity.ok(MovieMapper.toMovieDTO(optionalMovie.get()));
   }
 
   @PostMapping("/movies")
-  public ResponseEntity<Movie> saveMovie(@Valid @RequestBody Movie movie) {
+  public ResponseEntity<MovieDTO> saveMovie(@Valid @RequestBody MovieDTO movieDTO) {
 
     // cia ateina patikrintas
-    Movie savedMovie = movieService.saveMovie(movie);
+    Movie savedMovie = movieService.saveMovie(MovieMapper.toMovie(movieDTO));
 
     return ResponseEntity.created(
                     ServletUriComponentsBuilder.fromCurrentRequest()
@@ -52,7 +54,7 @@ public class MovieController {
                             .buildAndExpand(savedMovie)
                             .toUri()
             )
-            .body(savedMovie);
+            .body(MovieMapper.toMovieDTO(savedMovie));
   }
 
   @GetMapping("/movies/pagination")

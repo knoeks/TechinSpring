@@ -40,6 +40,7 @@ public class Movie {
     this.title = title;
     this.director = director;
     this.screenings = screenings;
+    this.actors = actors;
   }
 
   public Movie() {

@@ -41,6 +41,4 @@ public class BookMapper {
   public static Page<BookDTO> pageToBookDTO(Page<Book> bookPage) {
     return bookPage.map(BookMapper::toBookDTO);
   }
-
-
 }
