@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 public class ActorService {
-  private final ActorRepository actorRepository;
+  private ActorRepository actorRepository;
 
   @Autowired
   public ActorService(ActorRepository actorRepository) {

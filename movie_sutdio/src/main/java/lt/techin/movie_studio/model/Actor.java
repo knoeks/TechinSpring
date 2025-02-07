@@ -20,16 +20,6 @@ public class Actor {
   @Positive
   private Short age;
 
-  public Actor(Long id, String name, Short age) {
-    this.id = id;
-    this.name = name;
-    this.age = age;
-  }
-
-  public Actor() {
-
-  }
-
   public Long getId() {
     return id;
   }

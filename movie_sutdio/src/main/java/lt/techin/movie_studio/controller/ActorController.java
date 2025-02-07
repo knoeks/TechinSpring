@@ -2,8 +2,6 @@ package lt.techin.movie_studio.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
-import lt.techin.movie_studio.dto.ActorDTO;
-import lt.techin.movie_studio.dto.ActorMapper;
 import lt.techin.movie_studio.model.Actor;
 import lt.techin.movie_studio.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class ActorController {
-  private final ActorService actorService;
+  private ActorService actorService;
 
   @Autowired
   public ActorController(ActorService actorService) {
@@ -25,8 +23,8 @@ public class ActorController {
   }
 
   @GetMapping("/actors")
-  public ResponseEntity<List<ActorDTO>> getActors() {
-    return ResponseEntity.ok(ActorMapper.toActorsDTO(actorService.findAllActors()));
+  public ResponseEntity<List<Actor>> getActors() {
+    return ResponseEntity.ok(actorService.findAllActors());
   }
 
 

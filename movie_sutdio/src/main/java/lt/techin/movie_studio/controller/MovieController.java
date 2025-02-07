@@ -57,36 +57,11 @@ public class MovieController {
             .body(MovieMapper.toMovieDTO(savedMovie));
   }
 
-  @PutMapping("/movies/{id}")
-  public ResponseEntity<MovieDTO> updateMovie(@Valid @PathVariable Long id, @RequestBody MovieDTO movieDTO) {
-    Optional<Movie> optionalMovie = movieService.findMovieById(id);
-
-    if (!optionalMovie.isEmpty()) {
-      Movie movie = optionalMovie.get();
-      MovieMapper.updateMovieFromDTO(movieDTO, movie);
-
-      movieService.saveMovie(movie);
-
-      return ResponseEntity.ok(movieDTO);
-    }
-
-    Movie savedMovie = movieService.saveMovie(MovieMapper.toMovie(movieDTO, id));
-
-    return ResponseEntity.created(
-                    ServletUriComponentsBuilder.fromCurrentRequest()
-                            .path("api/movies/{id}")
-                            .buildAndExpand(savedMovie.getId())
-                            .toUri()
-            )
-            .body(movieDTO);
-  }
-
   @GetMapping("/movies/pagination")
-  public ResponseEntity<Page<MovieDTO>> getMoviesPage(@RequestParam int page,
-                                                      @RequestParam int size,
-                                                      @RequestParam(required = false) String sort) {
-    Page<MovieDTO> movieDTOPage = MovieMapper.toMovieDTOPage(movieService.findAllMoviesPage(page, size, sort));
-    return ResponseEntity.ok(movieDTOPage);
+  public ResponseEntity<Page<Movie>> getMoviesPage(@RequestParam int page,
+                                                   @RequestParam int size,
+                                                   @RequestParam(required = false) String sort) {
+    return ResponseEntity.ok(movieService.findAllMoviesPage(page, size, sort));
   }
 
 }

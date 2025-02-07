@@ -1,12 +1,15 @@
 package lt.techin.demo.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +18,8 @@ public class User {
   private String username;
   private String password;
 
-  @ManyToMany
+
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
           name = "users_roles",
           joinColumns = @JoinColumn(name = "user_id"),
@@ -29,10 +33,15 @@ public class User {
     this.roles = roles;
   }
 
+  public User() {
+
+  }
+
   public Long getId() {
     return id;
   }
 
+  @Override
   public String getUsername() {
     return username;
   }
@@ -41,6 +50,7 @@ public class User {
     this.username = username;
   }
 
+  @Override
   public String getPassword() {
     return password;
   }
@@ -55,5 +65,10 @@ public class User {
 
   public void setRoles(List<Role> roles) {
     this.roles = roles;
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return roles;
   }
 }

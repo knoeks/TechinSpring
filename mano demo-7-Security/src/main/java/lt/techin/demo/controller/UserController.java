@@ -5,6 +5,7 @@ import lt.techin.demo.model.User;
 import lt.techin.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -14,10 +15,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserController {
   private final UserService userService;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UserController(UserService userService) {
+  public UserController(UserService userService, PasswordEncoder passwordEncoder) {
     this.userService = userService;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @GetMapping("/users")
@@ -27,7 +30,6 @@ public class UserController {
 
   @PostMapping("/users")
   public ResponseEntity<User> addUser(@RequestBody User user) {
-
 
     // cia reikes panaudoti
     user.setPassword(passwordEncoder.encode(user.getPassword()));
