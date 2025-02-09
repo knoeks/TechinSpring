@@ -1,10 +1,6 @@
 package lt.techin.movie_studio.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -14,19 +10,13 @@ public class Screening {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-
-  @NotBlank
-  @Size(max = 3)
   private String hall;
-
-  @Future
-  @NotNull
-  private LocalDateTime time;
-
-  public Screening(long id, String hall, LocalDateTime screening_time) {
+  @Column(name = "screening_time")
+  private LocalDateTime screeningTime;
+  public Screening(long id, String hall, LocalDateTime screeningTime) {
     this.id = id;
     this.hall = hall;
-    this.time = screening_time;
+    this.screeningTime = screeningTime;
   }
 
   public Screening() {
@@ -45,11 +35,11 @@ public class Screening {
     this.hall = hall;
   }
 
-  public LocalDateTime getTime() {
-    return time;
+  public LocalDateTime getScreeningTime() {
+    return screeningTime;
   }
 
-  public void getTime(LocalDateTime time) {
-    this.time = time;
+  public void setScreeningTime(LocalDateTime screeningTime) {
+    this.screeningTime = screeningTime;
   }
 }

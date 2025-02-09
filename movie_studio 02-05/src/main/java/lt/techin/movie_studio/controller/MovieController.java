@@ -3,6 +3,7 @@ package lt.techin.movie_studio.controller;
 import jakarta.validation.Valid;
 import lt.techin.movie_studio.dto.MovieDTO;
 import lt.techin.movie_studio.dto.MovieMapper;
+import lt.techin.movie_studio.dto.MoviePutDTO;
 import lt.techin.movie_studio.model.Movie;
 import lt.techin.movie_studio.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class MovieController {
   }
 
   @PutMapping("/movies/{id}")
-  public ResponseEntity<MovieDTO> updateMovie(@Valid @PathVariable Long id, @RequestBody MovieDTO movieDTO) {
+  public ResponseEntity<?> updateMovie(@Valid @PathVariable Long id, @RequestBody MovieDTO movieDTO) {
     Optional<Movie> optionalMovie = movieService.findMovieById(id);
 
     if (!optionalMovie.isEmpty()) {
@@ -67,10 +68,10 @@ public class MovieController {
 
       movieService.saveMovie(movie);
 
-      return ResponseEntity.ok(movieDTO);
+      return ResponseEntity.ok(MovieMapper.toMoviePutDTO(movieDTO));
     }
 
-    Movie savedMovie = movieService.saveMovie(MovieMapper.toMovie(movieDTO, id));
+    Movie savedMovie = movieService.saveMovie(MovieMapper.toMovie(movieDTO));
 
     return ResponseEntity.created(
                     ServletUriComponentsBuilder.fromCurrentRequest()

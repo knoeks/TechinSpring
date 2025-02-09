@@ -31,25 +31,25 @@ public class ActorController {
 
 
   @GetMapping("/actors/{id}")
-  public ResponseEntity<Actor> getActor(@Valid @PathVariable Long id) {
+  public ResponseEntity<ActorDTO> getActor(@Valid @PathVariable Long id) {
     Optional<Actor> optionalActor = actorService.findActorById(id);
 
     if (optionalActor.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
-    return ResponseEntity.ok(optionalActor.get());
+    return ResponseEntity.ok(ActorMapper.toActorDTO(optionalActor.get()));
   }
 
   @PostMapping("/actors")
-  public ResponseEntity<Actor> saveActor(@Valid @RequestBody Actor actor) {
-    Actor savedActor = actorService.saveActor(actor);
+  public ResponseEntity<ActorDTO> saveActor(@Valid @RequestBody ActorDTO actorDTO) {
+    Actor savedActor = actorService.saveActor(ActorMapper.toActor(actorDTO));
 
     return ResponseEntity.created(
             ServletUriComponentsBuilder.fromCurrentRequest()
                     .path("/{id}")
                     .buildAndExpand(savedActor.getId())
                     .toUri()
-    ).body(savedActor);
+    ).body(ActorMapper.toActorDTO(savedActor));
   }
 }

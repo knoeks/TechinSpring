@@ -13,11 +13,7 @@ public class Actor {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Size(max = 60)
-  @Person
   private String name;
-  @Positive
   private Short age;
 
   public Actor(Long id, String name, Short age) {

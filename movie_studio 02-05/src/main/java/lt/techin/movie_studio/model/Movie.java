@@ -15,12 +15,7 @@ public class Movie {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-
-  @NotBlank
-  @Size(max = 50)
   private String title;
-
-  @Person
   private String director;
 
   @OneToMany(cascade = CascadeType.ALL)

@@ -15,10 +15,20 @@ public class MovieMapper {
 
   public static MovieDTO toMovieDTO(Movie movie) {
     return new MovieDTO(
+            movie.getId(),
             movie.getTitle(),
             movie.getDirector(),
             movie.getScreenings(),
             movie.getActors()
+    );
+  }
+
+  public static MoviePutDTO toMoviePutDTO(MovieDTO movieDTO) {
+    return new MoviePutDTO(
+            movieDTO.title(),
+            movieDTO.director(),
+            movieDTO.screenings(),
+            movieDTO.actors()
     );
   }
 

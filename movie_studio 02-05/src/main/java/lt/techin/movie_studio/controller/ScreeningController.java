@@ -1,6 +1,8 @@
 package lt.techin.movie_studio.controller;
 
 import jakarta.validation.Valid;
+import lt.techin.movie_studio.dto.ScreeningDTO;
+import lt.techin.movie_studio.dto.ScreeningMapper;
 import lt.techin.movie_studio.model.Screening;
 import lt.techin.movie_studio.service.ScreeningService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +24,24 @@ public class ScreeningController {
   }
 
   @GetMapping("/screenings")
-  public ResponseEntity<List<Screening>> getScreenings() {
-    return ResponseEntity.ok(screeningService.findAllScreenings());
+  public ResponseEntity<List<ScreeningDTO>> getScreenings() {
+    return ResponseEntity.ok(ScreeningMapper.toScreeningsDTOList(screeningService.findAllScreenings()));
   }
 
 
   @GetMapping("/screenings/{id}")
-  public ResponseEntity<Screening> getScreening(@PathVariable Long id) {
+  public ResponseEntity<ScreeningDTO> getScreening(@PathVariable Long id) {
     Optional<Screening> optionalScreening = screeningService.findScreeningById(id);
     if (optionalScreening.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
-    return ResponseEntity.ok(optionalScreening.get());
+    return ResponseEntity.ok(ScreeningMapper.toScreeningDTO(optionalScreening.get()));
   }
 
   @PostMapping("/screenings")
-  public ResponseEntity<Screening> saveScreening(@Valid @RequestBody Screening screening) {
-    Screening savedScreening = screeningService.saveScreening(screening);
+  public ResponseEntity<ScreeningDTO> saveScreening(@Valid @RequestBody ScreeningDTO screeningDTO) {
+    Screening savedScreening = screeningService.saveScreening(ScreeningMapper.toScreening(screeningDTO));
 
     return ResponseEntity.created(
                     ServletUriComponentsBuilder.fromCurrentRequest()
@@ -47,7 +49,7 @@ public class ScreeningController {
                             .buildAndExpand(savedScreening.getId())
                             .toUri()
             )
-            .body(savedScreening);
+            .body(ScreeningMapper.toScreeningDTO(savedScreening));
   }
 
 }
