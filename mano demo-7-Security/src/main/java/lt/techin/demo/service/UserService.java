@@ -21,6 +21,7 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  // sito reikes tam
   public Optional<User> findUserByUsername(String username) {
     return userRepository.findByUsername(username);
   }
