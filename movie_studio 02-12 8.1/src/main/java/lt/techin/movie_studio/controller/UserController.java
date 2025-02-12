@@ -94,10 +94,6 @@ public class UserController {
 
     UserMapper.updateUser(userDTO, userFromDB, passwordEncoder);
 
-//    userFromDB.setUsername(userDTO.username());
-//    userFromDB.setPassword(passwordEncoder.encode(userDTO.password()));
-//    userFromDB.setRoles(userDTO.roles());
-
     userService.saveUser(userFromDB);
 
     return ResponseEntity.ok(UserMapper.toUserDTO(userFromDB));
