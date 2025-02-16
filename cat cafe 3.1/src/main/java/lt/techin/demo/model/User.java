@@ -1,8 +1,7 @@
-package lt.techin.povilas.kartojimas21.model;
+package lt.techin.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.DialectOverride;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,17 +11,18 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private long id;
 
-  @NotBlank
-  @Size(min = 5, max = 50)
   private String username;
-  @NotBlank
   private String password;
 
-  @ManyToMany
+  // Default yra LAZY
+  // Reikia EAGER, nes nespėja Spring Security pasiekti rolių,
+  // nes užsidaro session
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
           name = "users_roles",
           joinColumns = @JoinColumn(name = "user_id"),
@@ -30,26 +30,32 @@ public class User implements UserDetails {
   )
   private List<Role> roles;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany
   @JoinColumn(name = "user_id")
-  private List<Rental> rentals;
+  private List<Reservation> reservations;
+
+  @OneToMany
+  @JoinColumn(name = "user_id")
+  private List<CatAdoption> CatAdoptions;
 
 
-  public User(Long id, String username, String password, List<Role> roles, List<Rental> rentals) {
+  public User(long id, String username, String password, List<Role> roles, List<Reservation> reservations, List<CatAdoption> catAdoptions) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.roles = roles;
-    this.rentals = rentals;
+    this.reservations = reservations;
+    CatAdoptions = catAdoptions;
   }
 
   public User() {
   }
 
-  public Long getId() {
+  public long getId() {
     return id;
   }
 
+  @Override
   public String getUsername() {
     return username;
   }
@@ -59,10 +65,6 @@ public class User implements UserDetails {
   }
 
   @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return roles;
-  }
-
   public String getPassword() {
     return password;
   }
@@ -79,11 +81,25 @@ public class User implements UserDetails {
     this.roles = roles;
   }
 
-  public List<Rental> getRentals() {
-    return rentals;
+  // Konkrečiai nurodome Spring'ui, jog turime sąrašą rolių
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return roles;
   }
 
-  public void setRentals(List<Rental> rentals) {
-    this.rentals = rentals;
+  public List<Reservation> getReservations() {
+    return reservations;
+  }
+
+  public void setReservations(List<Reservation> reservations) {
+    this.reservations = reservations;
+  }
+
+  public List<CatAdoption> getCatAdoptions() {
+    return CatAdoptions;
+  }
+
+  public void setCatAdoptions(List<CatAdoption> catAdoptions) {
+    CatAdoptions = catAdoptions;
   }
 }

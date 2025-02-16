@@ -1,6 +1,9 @@
 package lt.techin.povilas.kartojimas21.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,18 +16,30 @@ public class Rental {
   private Long id;
 
   @Column(name = "rental_start")
+  @Future
   private LocalDate rentalStart;
 
   @Column(name = "rental_end")
+  @Future
   private LocalDate rentalEnd;
-
+  @NotNull
+  @Positive
   private BigDecimal price;
 
-  public Rental(Long id, LocalDate rentalStart, LocalDate rentalEnd, BigDecimal price) {
+  @ManyToOne
+  private Car car;
+
+  @ManyToOne
+  private User user;
+
+
+  public Rental(Long id, LocalDate rentalStart, LocalDate rentalEnd, BigDecimal price, Car car, User user) {
     this.id = id;
     this.rentalStart = rentalStart;
     this.rentalEnd = rentalEnd;
     this.price = price;
+    this.car = car;
+    this.user = user;
   }
 
   public Rental() {
@@ -58,5 +73,19 @@ public class Rental {
     this.price = price;
   }
 
+  public Car getCar() {
+    return car;
+  }
 
+  public void setCar(Car car) {
+    this.car = car;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
 }

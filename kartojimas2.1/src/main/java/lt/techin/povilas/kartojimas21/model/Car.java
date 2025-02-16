@@ -24,13 +24,12 @@ public class Car {
   private String model;
 
   @NotNull
-  @Past
   private Integer year;
 
   @NotBlank
   private String status;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "car_id")
   private List<Rental> rentals;
 
@@ -89,4 +88,5 @@ public class Car {
   public void setRentals(List<Rental> rentals) {
     this.rentals = rentals;
   }
+
 }

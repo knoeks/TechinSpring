@@ -31,7 +31,7 @@ public class BookService {
     return bookRepository.existsById(id);
   }
 
-  public Optional<Book> findBookById(long id) {
+  public Optional<Book> findBookById(Long id) {
     return bookRepository.findById(id);
   }
 
